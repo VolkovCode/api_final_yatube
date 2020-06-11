@@ -1,17 +1,27 @@
-# TODO:  Напишите свой вариант
-from rest_framework import viewsets, status, permissions, filters
+from rest_framework import (
+    viewsets, 
+    status, 
+    permissions, 
+    filters
+)    
 from rest_framework.response import Response
 from rest_framework.decorators import action
+
 from .models import Post, Comment, Follow, Group, User
-from .serializers import PostSerializer, CommentSerializer, GroupSerializer, FollowerSerializer
+from .serializers import (
+    PostSerializer, 
+    CommentSerializer, 
+    GroupSerializer, 
+    FollowerSerializer
+)    
 from .permissions import IsOwnerOrReadOnly
 
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [
-                          IsOwnerOrReadOnly
-                        ]
+        IsOwnerOrReadOnly
+    ]
     
     def get_queryset(self):
         if not self.request.query_params.get('group'):
@@ -27,8 +37,8 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Comment.objects.filter(post_id=self.kwargs['post_id'])
     serializer_class = CommentSerializer
     permission_classes = [
-                          IsOwnerOrReadOnly
-                        ]
+        IsOwnerOrReadOnly
+    ]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -38,10 +48,13 @@ class FollowViewSet(viewsets.ModelViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowerSerializer
     permission_classes = [
-                          IsOwnerOrReadOnly
-                         ]
+        IsOwnerOrReadOnly
+    ]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['=following__username', "=user__username"]               
+    search_fields = [
+        '=following__username', 
+        "=user__username"
+    ]               
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -64,5 +77,5 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer    
     permission_classes = [
-                          IsOwnerOrReadOnly
-                         ] 
+        IsOwnerOrReadOnly
+    ] 

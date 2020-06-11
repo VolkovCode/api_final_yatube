@@ -4,7 +4,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet, FollowViewSet, GroupViewSet
+from .views import (
+    PostViewSet, 
+    CommentViewSet, 
+    FollowViewSet, 
+    GroupViewSet
+)    
 from rest_framework.authtoken import views
     
 router = DefaultRouter()
